@@ -1,9 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../ui/export.dart';
 import '../Dashboard/Dashboard.dart';
 import '../Absensi/Absensi.dart';
 import '../Nilai/Nilai.dart';
 import '../Biodata/Biodata.dart';
+import '../../preference.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
+import 'dart:convert';
 
 class LogicalPage extends StatefulWidget {
   const LogicalPage({Key? key}) : super(key: key);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../ui/export.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Absensi extends StatefulWidget {
   const Absensi({Key? key}) : super(key: key);
@@ -9,8 +10,21 @@ class Absensi extends StatefulWidget {
 }
 
 class _AbsensiState extends State<Absensi> {
+  var username = '';
+  var id_siswa = '';
+  var nama_siswa = '';
   @override
   Widget build(BuildContext context) {
+    getTemp() async {
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        username = prefs.getString("username").toString();
+        id_siswa = prefs.getString("id_siswa").toString();
+        nama_siswa = prefs.getString("nama_siswa").toString();
+      });
+    }
+
+    getTemp();
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -34,7 +48,7 @@ class _AbsensiState extends State<Absensi> {
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                       child: Text(
-                        "Hallo, Stevanie!",
+                        nama_siswa,
                         style: TextStyle(
                           fontFamily: 'Mulish',
                           fontWeight: FontWeight.bold,

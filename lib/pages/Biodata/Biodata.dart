@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../ui/export.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Biodata extends StatefulWidget {
   const Biodata({Key? key}) : super(key: key);
@@ -9,8 +10,21 @@ class Biodata extends StatefulWidget {
 }
 
 class _BiodataState extends State<Biodata> {
+  var username = '';
+  var id_siswa = '';
+  var nama_siswa = '';
   @override
   Widget build(BuildContext context) {
+    getTemp() async {
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        username = prefs.getString("username").toString();
+        id_siswa = prefs.getString("id_siswa").toString();
+        nama_siswa = prefs.getString("nama_siswa").toString();
+      });
+    }
+
+    getTemp();
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -36,7 +50,7 @@ class _BiodataState extends State<Biodata> {
                       child: Column(
                         children: [
                           Text(
-                            "Hallo, Stevanie!",
+                            nama_siswa,
                             style: TextStyle(
                               fontFamily: 'Mulish',
                               fontWeight: FontWeight.bold,

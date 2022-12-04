@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../../ui/export.dart';
 import '../LogicalPage/LogicalPage.dart';
+import '../LogicalPage/LogicalPage.dart';
+import '../../adapter/postLogin.dart';
+import 'dart:convert';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -12,6 +16,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  postLogin? postResult = null;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -98,6 +105,7 @@ class _LoginState extends State<Login> {
                         width: 300,
                         height: 40,
                         child: TextFormField(
+                          controller: usernameController,
                           textAlign: TextAlign.left,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -126,6 +134,7 @@ class _LoginState extends State<Login> {
                         width: 300,
                         height: 40,
                         child: TextFormField(
+                          controller: passwordController,
                           textAlign: TextAlign.left,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -172,13 +181,32 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Login Berhasil!")));
-                            Timer(Duration(seconds: 5), () {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => LogicalPage()));
+                            postLogin
+                                .connectAPI(usernameController.text,
+                                    passwordController.text)
+                                .then((value) {
+                              // log("login page res : " + value.status);
+                              postResult = value;
+                              if (value.status == "200") {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(value.message)));
+                                Timer(Duration(seconds: 5), () {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => LogicalPage()));
+                                });
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(value.message)));
+                                Timer(Duration(seconds: 5), () {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                });
+                              }
+                              setState(() {
+                                log(value.status);
+                              });
                             });
                           },
                         ))),

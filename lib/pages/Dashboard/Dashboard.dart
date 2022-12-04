@@ -1,5 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import '../../ui/export.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../preference.dart';
+import 'dart:developer';
+import 'dart:convert';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -9,8 +15,24 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  var username = '';
+  var id_siswa = '';
+  var nama_siswa = '';
+
+  // _getTemp();
+
   @override
   Widget build(BuildContext context) {
+    getTemp() async {
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        username = prefs.getString("username").toString();
+        id_siswa = prefs.getString("id_siswa").toString();
+        nama_siswa = prefs.getString("nama_siswa").toString();
+      });
+    }
+
+    getTemp();
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -34,7 +56,7 @@ class _DashboardState extends State<Dashboard> {
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                       child: Text(
-                        "Hallo, Stevanie!",
+                        nama_siswa,
                         style: TextStyle(
                           fontFamily: 'Mulish',
                           fontWeight: FontWeight.bold,
