@@ -32,7 +32,9 @@ class _DashboardState extends State<Dashboard> {
       });
     }
 
-    getTemp();
+    if (username == '') {
+      getTemp();
+    }
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 

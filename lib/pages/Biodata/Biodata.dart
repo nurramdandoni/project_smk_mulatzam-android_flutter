@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../ui/export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../adapter/postLogin.dart';
+import 'dart:convert';
+import 'dart:developer';
 
 class Biodata extends StatefulWidget {
   const Biodata({Key? key}) : super(key: key);
@@ -24,7 +27,9 @@ class _BiodataState extends State<Biodata> {
       });
     }
 
-    getTemp();
+    if (username == '') {
+      getTemp();
+    }
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
