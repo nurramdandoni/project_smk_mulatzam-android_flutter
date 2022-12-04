@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../ui/export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../adapter/postLogin.dart';
+import '../../adapter/getBiodata.dart';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:ApplicationName/globals.dart' as globals;
 
 class Biodata extends StatefulWidget {
   const Biodata({Key? key}) : super(key: key);
@@ -16,6 +17,17 @@ class _BiodataState extends State<Biodata> {
   var username = '';
   var id_siswa = '';
   var nama_siswa = '';
+  final TextEditingController BiodataNamaController = TextEditingController();
+  final TextEditingController BiodataNisController = TextEditingController();
+  final TextEditingController BiodataJurusanController =
+      TextEditingController();
+  final TextEditingController BiodataKelasController = TextEditingController();
+  final TextEditingController BiodataTtlController = TextEditingController();
+  final TextEditingController BiodataJkController = TextEditingController();
+  final TextEditingController BiodataEmailController = TextEditingController();
+  final TextEditingController BiodataTelpController = TextEditingController();
+  final TextEditingController BiodataAlamatController = TextEditingController();
+  getBiodata? getResult = null;
   @override
   Widget build(BuildContext context) {
     getTemp() async {
@@ -30,6 +42,21 @@ class _BiodataState extends State<Biodata> {
     if (username == '') {
       getTemp();
     }
+    getBiodata.getBioSiswaAPI(id_siswa).then((value) {
+      getResult = value;
+      BiodataNamaController.text = value.namaLengkap.toString();
+      BiodataNisController.text = value.nis.toString();
+      BiodataJurusanController.text = value.namaJurusan.toString();
+      BiodataKelasController.text = value.namaKelas.toString();
+      BiodataTtlController.text =
+          value.tl.toString() + ', ' + value.tgl.toString();
+      BiodataJkController.text = value.jenisKelamin.toString();
+      BiodataEmailController.text = value.email.toString();
+      BiodataTelpController.text = value.telp.toString();
+      BiodataAlamatController.text = value.alamat.toString();
+    });
+    log("ini variabel global : " + globals.baseUrl);
+    log("ini variabel nama : " + BiodataNamaController.text);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -143,7 +170,7 @@ class _BiodataState extends State<Biodata> {
                   width: 300,
                   height: 40,
                   child: TextFormField(
-                    initialValue: '2022-0054-0001',
+                    controller: BiodataNisController,
                     readOnly: true,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -170,7 +197,7 @@ class _BiodataState extends State<Biodata> {
                   width: 300,
                   height: 40,
                   child: TextFormField(
-                    initialValue: 'Rekayasa Perangkat Lunak',
+                    controller: BiodataJurusanController,
                     readOnly: true,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -197,7 +224,7 @@ class _BiodataState extends State<Biodata> {
                   width: 300,
                   height: 40,
                   child: TextFormField(
-                    initialValue: 'XI RPL 1',
+                    controller: BiodataKelasController,
                     readOnly: true,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -224,7 +251,7 @@ class _BiodataState extends State<Biodata> {
                   width: 300,
                   height: 40,
                   child: TextFormField(
-                    initialValue: 'Stevanie Agustina Putri',
+                    controller: BiodataNamaController,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -250,7 +277,7 @@ class _BiodataState extends State<Biodata> {
                   width: 300,
                   height: 40,
                   child: TextFormField(
-                    initialValue: 'Jakarta, 14 Mei 1990',
+                    controller: BiodataTtlController,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -276,7 +303,7 @@ class _BiodataState extends State<Biodata> {
                   width: 300,
                   height: 40,
                   child: TextFormField(
-                    initialValue: 'Perempuan',
+                    controller: BiodataJkController,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -302,7 +329,7 @@ class _BiodataState extends State<Biodata> {
                   width: 300,
                   height: 40,
                   child: TextFormField(
-                    initialValue: 'stevanie.agustine@gmail.com',
+                    controller: BiodataEmailController,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -328,7 +355,7 @@ class _BiodataState extends State<Biodata> {
                   width: 300,
                   height: 40,
                   child: TextFormField(
-                    initialValue: '0895330802688',
+                    controller: BiodataTelpController,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -354,7 +381,7 @@ class _BiodataState extends State<Biodata> {
                   width: 300,
                   height: 40,
                   child: TextFormField(
-                    initialValue: 'Kuningan, Jawa Barat',
+                    controller: BiodataAlamatController,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(20, 10, 0, 0),
